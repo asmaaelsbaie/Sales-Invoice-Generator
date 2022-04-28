@@ -172,7 +172,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="headerTable.getSelectionModel().addListSelectionListener(this);&#xd;&#xa;"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="headerTable.getSelectionModel().addListSelectionListener(listner);&#xd; "/>
           </AuxValues>
         </Component>
       </SubComponents>

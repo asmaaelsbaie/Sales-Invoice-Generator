@@ -4,28 +4,16 @@
  */
 package test;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import Controller.InvoiceHeaderListner;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.FileChooserUI;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import test.Model.HeaderTableModel;
 import test.Model.InvoiceHeader;
 import test.Model.InvoiceLine;
@@ -37,7 +25,7 @@ import test.View.LineTableDialog;
  *
  * @author Asmaa Elsbaie
  */
-public class NewJFrame extends javax.swing.JFrame implements ActionListener, ListSelectionListener {
+public class NewJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
@@ -60,7 +48,7 @@ public class NewJFrame extends javax.swing.JFrame implements ActionListener, Lis
         invTableLb = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         headerTable = new javax.swing.JTable();
-        headerTable.getSelectionModel().addListSelectionListener(this);
+        headerTable.getSelectionModel().addListSelectionListener(listner);
         nInvBtn = new javax.swing.JButton();
         dInvBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -306,18 +294,18 @@ public class NewJFrame extends javax.swing.JFrame implements ActionListener, Lis
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         // TODO add your handling code here:
-        saveChange();
+        listner.saveChange();
     }//GEN-LAST:event_saveBtnActionPerformed
 
     private void saveFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileMenuItemActionPerformed
         // TODO add your handling code here:
-        saveFile();
+        listner.saveFile();
     }//GEN-LAST:event_saveFileMenuItemActionPerformed
 
     private void loadFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFileMenuItemActionPerformed
         try {
             // TODO add your handling code here:
-            LoadFiles();
+            listner.LoadFiles();
         } catch (Exception ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -325,22 +313,22 @@ public class NewJFrame extends javax.swing.JFrame implements ActionListener, Lis
 
     private void nInvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nInvBtnActionPerformed
         // TODO add your handling code here:
-        createInv();
+        listner.createInv();
     }//GEN-LAST:event_nInvBtnActionPerformed
 
     private void invItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invItemBtnActionPerformed
         // TODO add your handling code here:
-        createInvItem();
+        listner.createInvItem();
     }//GEN-LAST:event_invItemBtnActionPerformed
 
     private void dInvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dInvBtnActionPerformed
         // TODO add your handling code here:
-        deleteInv();
+        listner.deleteInv();
     }//GEN-LAST:event_dInvBtnActionPerformed
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         // TODO add your handling code here:
-        cancelChange();
+        listner.cancelChange();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     /**
@@ -359,22 +347,16 @@ public class NewJFrame extends javax.swing.JFrame implements ActionListener, Lis
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NewJFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new NewJFrame().setVisible(true);
         });
     }
 
@@ -407,8 +389,8 @@ public class NewJFrame extends javax.swing.JFrame implements ActionListener, Lis
     private javax.swing.JLabel totalLb;
     // End of variables declaration//GEN-END:variables
 
-    private ArrayList<InvoiceHeader> invoices = new ArrayList<>();
-    private SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+    private final ArrayList<InvoiceHeader> invoices = new ArrayList<>();
+
     HeaderTableModel headerModel;
     LineTableModel lineModel;
     HeaderTableDialog headerDialog;
@@ -417,258 +399,126 @@ public class NewJFrame extends javax.swing.JFrame implements ActionListener, Lis
     File selectFile;
     InvoiceHeader invHeader1;
     InvoiceLine line1;
+    private final InvoiceHeaderListner listner = new InvoiceHeaderListner(this);
 
-    private void createInv() {
-        headerDialog = new HeaderTableDialog(this);
-        headerDialog.setVisible(true);
-
+    public JButton getCancelBtn() {
+        return cancelBtn;
     }
 
-    private void LoadFiles() throws Exception {
-        invoices.clear();
-
-        JOptionPane.showMessageDialog(this, "please select invoice header file",
-                "Invoice Header", JOptionPane.WARNING_MESSAGE);
-        JFileChooser fc = new JFileChooser();
-        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-
-            selectFile = fc.getSelectedFile();
-            FileReader fr = new FileReader(selectFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            String line = null;
-            while ((line = br.readLine()) != null) {
-
-                String[] headerSegments = line.split(",");
-                String invNumStr = headerSegments[0];
-                String invDateStr = headerSegments[1];
-                String custname = headerSegments[2];
-                int invNum = Integer.parseInt(invNumStr);
-                Date invDate = df.parse(invDateStr);
-                InvoiceHeader header = new InvoiceHeader(invNum, invDate, custname);
-                invoices.add(header);
-
-            }
-            br.close();
-            fr.close();
-            System.out.println("check");
-            JOptionPane.showMessageDialog(this,
-                    "please select invoice Lines file",
-                    "Invoice Lines", JOptionPane.WARNING_MESSAGE);
-
-            if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-
-                selectFile = fc.getSelectedFile();
-                fr = new FileReader(selectFile);
-                br = new BufferedReader(fr);
-
-                line = null;
-                while ((line = br.readLine()) != null) {
-
-                    String[] lineSegments = line.split(",");
-                    String invNumStr = lineSegments[0];
-                    String item = lineSegments[1];
-                    String priceStr = lineSegments[2];
-                    String countStr = lineSegments[3];
-                    int invNum = Integer.parseInt(invNumStr);
-                    double price = Double.parseDouble(priceStr);
-                    int count = Integer.parseInt(countStr);
-
-                    InvoiceHeader header = findByNum(invNum);
-                    InvoiceLine invLine = new InvoiceLine(item, price, count, header);
-                    header.addLine(invLine);
-
-                }
-                br.close();
-                fr.close();
-                headerModel = new HeaderTableModel(invoices);
-                headerTable.setModel(headerModel);
-                headerTable.validate();
-            }
-
-        }
+    public JTextField getCustNameTF() {
+        return custNameTF;
     }
 
-    private InvoiceHeader findByNum(int num) {
-        for (InvoiceHeader header : invoices) {
-            if (header.getNum() == num) {
-                return header;
-            }
-        }
-        return null;
+    public JButton getdInvBtn() {
+        return dInvBtn;
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-        HeaderTableRowSelected();
+    public JButton getInvItemBtn() {
+        return invItemBtn;
     }
 
-    private void HeaderTableRowSelected() {
-
-        int selectedRowIndex = headerTable.getSelectedRow();
-        if (selectedRowIndex >= 0) {
-            InvoiceHeader row = headerModel.getInvoices().get(selectedRowIndex);
-            custNameTF.setText(row.getCustName());
-            InvDateTF.setText(row.getDate().toString());
-            invNumLb.setText("" + row.getNum());
-            totalLb.setText("" + row.getInvTotal());
-            ArrayList<InvoiceLine> lines = row.getLines();
-            lineModel = new LineTableModel(lines);
-            lineTable.setModel(lineModel);
-            lineModel.fireTableDataChanged();
-        }
+    public JLabel getTotalLb() {
+        return totalLb;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("okBtnDialog")) {
-            createInvOKDialog();
-        } else if (e.getActionCommand().equals("cancelBtnDialog")) {
-            createInvCancelDialog();
-        } else if (e.getActionCommand().equals("okBtnDialogL")) {
-            createInvOKDialogLine();
-        } else if (e.getActionCommand().equals("cancelBtnDialogL")) {
-            createInvCancelDialogLine();
-        }
+    public JLabel getInvNumLb() {
+        return invNumLb;
     }
 
-    private void createInvOKDialog() {
-        String custName = headerDialog.getCustNameDialogTf().getText();
-        String invDateStr = headerDialog.getInvDataDialogTf().getText();
-        Date invDate = new Date();
-        try {
-            invDate = df.parse(invDateStr);
-        } catch (ParseException ex) {
-        }
-        headerDialog.setVisible(false);
-        int num = getMaxInvNum() + 1;
-        newInvHader = new InvoiceHeader(num, invDate, custName);
-        invoices.add(newInvHader);
-        headerModel.fireTableDataChanged();
-
-        System.out.println("check");
+    public JMenuItem getLoadFileMenuItem() {
+        return loadFileMenuItem;
     }
 
-    private void createInvCancelDialog() {
-        headerDialog.setVisible(false);
+    public JMenuItem getSaveFileMenuItem() {
+        return saveFileMenuItem;
     }
 
-    private int getMaxInvNum() {
-        int num = 0;
-        for (InvoiceHeader header : invoices) {
-            if (header.getNum() > num) {
-                num = header.getNum();
-            }
-
-        }
-        return num;
+    public InvoiceHeader getNewInvHader() {
+        return newInvHader;
     }
 
-    private void createInvOKDialogLine() {
-        String itemName = LineDialog.getItemNameDialogTf().getText();
-        String itemCountStr = LineDialog.getCountDialogTf().getText();
-        String itemPriceStr = LineDialog.getPriceDialogTf().getText();
-        LineDialog.setVisible(false);
-
-        int itmeCount = Integer.parseInt(itemCountStr);
-        double itemPrice = Double.parseDouble(itemPriceStr);
-        invHeader1 = invoices.get(headerTable.getSelectedRow());
-        InvoiceLine line1 = new InvoiceLine(itemName, itemPrice, itmeCount, invHeader1);
-        invHeader1.addLine(line1);
-        lineModel.fireTableDataChanged();
-        headerModel.fireTableDataChanged();
-
+    public InvoiceHeaderListner getListner() {
+        return listner;
     }
 
-    private void createInvCancelDialogLine() {
-        LineDialog.setVisible(false);
+    public JButton getnInvBtn() {
+        return nInvBtn;
     }
 
-    private void createInvItem() {
-        LineDialog = new LineTableDialog(this);
-        LineDialog.setVisible(true);
+    public JButton getSaveBtn() {
+        return saveBtn;
     }
 
-    private void deleteInv() {
-        invoices.remove(newInvHader);
-        invHeader1.removeLine(line1);
-        headerModel.fireTableDataChanged();
-        lineModel.fireTableDataChanged();
-
+    public ArrayList<InvoiceHeader> getInvoices() {
+        return invoices;
     }
 
-    private void cancelChange() {
-        System.exit(0);
-        System.out.println("close");
-
+    public JTextField getInvDateTF() {
+        return InvDateTF;
     }
 
-    private void saveChange() {
-        saveHeaderChange();
-        saveLineChange();
+    public HeaderTableModel getHeaderModel() {
+        return headerModel;
     }
 
-    private void saveHeaderChange() {
-        JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("File Save");
-        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File savedFile = fc.getSelectedFile();
-
-            try {
-                FileWriter fw = new FileWriter(savedFile);
-                BufferedWriter bw = new BufferedWriter(fw);
-                for (int i = 0; i < headerTable.getRowCount(); i++) {
-                    for (int j = 0; j < headerTable.getColumnCount(); j++) {
-                        bw.write(headerTable.getValueAt(i, j).toString() + ",");
-                    }
-                    bw.newLine();
-                }
-                JOptionPane.showMessageDialog(this, "Save Header Table Done",
-                        "Save Info", JOptionPane.INFORMATION_MESSAGE);
-                bw.close();
-                fw.close();
-            } catch (IOException ex) {
-                Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error",
-                        "Error Info", JOptionPane.ERROR_MESSAGE);
-            }
-
-        }
-
+    public HeaderTableDialog getHeaderDialog() {
+        return headerDialog;
     }
 
-    private void saveLineChange() {
-        JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("File Save");
-        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File savedFile = fc.getSelectedFile();
-
-            try {
-                FileWriter fw = new FileWriter(savedFile + ".csv");
-                BufferedWriter bw = new BufferedWriter(fw);
-                for (InvoiceHeader inv : invoices) {
-                    for (InvoiceLine item : inv.getLines()) {
-                        bw.write(inv.getNum() + "," + item.getProduct() + "," + item.getPrice() + "," + item.getCount());
-
-                    }
-                    bw.newLine();
-                }
-
-                JOptionPane.showMessageDialog(this, "Save Line Table Done", "Save Info", JOptionPane.INFORMATION_MESSAGE);
-                bw.close();
-                fw.close();
-
-            } catch (IOException ex) {
-                Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error",
-                        "Error Info", JOptionPane.ERROR_MESSAGE);
-            }
-
-        }
+    public File getSelectFile() {
+        return selectFile;
     }
 
-    private void saveFile() {
-
-        saveChange();
+    public void setSelectFile(File selectFile) {
+        this.selectFile = selectFile;
     }
+
+    public LineTableDialog getLineDialog() {
+        return LineDialog;
+    }
+
+    public InvoiceHeader getInvHeader1() {
+        return invHeader1;
+    }
+
+    public void setHeaderModel(HeaderTableModel headerModel) {
+        this.headerModel = headerModel;
+    }
+
+    public void setLineModel(LineTableModel lineModel) {
+        this.lineModel = lineModel;
+    }
+
+    public JTable getHeaderTable() {
+        return headerTable;
+    }
+
+    public JTable getLineTable() {
+        return lineTable;
+    }
+
+    public LineTableModel getLineModel() {
+        return lineModel;
+    }
+
+    public InvoiceLine getLine1() {
+        return line1;
+    }
+
+    public void setLineDialog(LineTableDialog LineDialog) {
+        this.LineDialog = LineDialog;
+    }
+
+    public void setInvHeader1(InvoiceHeader invHeader1) {
+        this.invHeader1 = invHeader1;
+    }
+
+    public void setNewInvHader(InvoiceHeader newInvHader) {
+        this.newInvHader = newInvHader;
+    }
+
+    public void setHeaderDialog(HeaderTableDialog headerDialog) {
+        this.headerDialog = headerDialog;
+    }
+
 }
