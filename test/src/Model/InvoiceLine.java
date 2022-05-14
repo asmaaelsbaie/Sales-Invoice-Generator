@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package test.Model;
+package Model;
 
 /**
  *
  * @author Asmaa Elsbaie
  */
-public class InvoiceLine {
+public final class InvoiceLine {
     
     private String product;
     private double price;

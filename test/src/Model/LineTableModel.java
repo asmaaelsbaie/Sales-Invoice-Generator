@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package test.Model;
+package Model;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
@@ -42,14 +42,18 @@ public class LineTableModel extends AbstractTableModel {
     public Object getValueAt(int row, int column) {
         InvoiceLine inv = invoices.get(row);
         switch (column) {
-            case 0:
+            case 0 -> {
                 return inv.getProduct();
-            case 1:
+            }
+            case 1 -> {
                 return inv.getPrice();
-            case 2:
+            }
+            case 2 -> {
                 return inv.getCount();
-            case 3:
+            }
+            case 3 -> {
                 return inv.getLineTotal();
+            }
         }
         return null;
     }

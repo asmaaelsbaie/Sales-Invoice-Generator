@@ -2,16 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package test.Model;
+package Model;
 
 import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
+
 
 /**
  *
  * @author Asmaa Elsbaie
  */
-public class HeaderTableModel extends DefaultTableModel {
+public class HeaderTableModel extends AbstractTableModel  {
 
     String[] colsName = {"No.", "Date", "Customer Name", "Total"};
     ArrayList<InvoiceHeader> invoices;
@@ -43,14 +44,18 @@ public class HeaderTableModel extends DefaultTableModel {
     public Object getValueAt(int row, int column) {
         InvoiceHeader inv = invoices.get(row);
         switch (column) {
-            case 0:
+            case 0 -> {
                 return inv.getNum();
-            case 1:
+            }
+            case 1 -> {
                 return inv.getCustName();
-            case 2:
+            }
+            case 2 -> {
                 return inv.getDate();
-            case 3:
+            }
+            case 3 -> {
                 return inv.getInvTotal();
+            }
         }
         return null;
     }

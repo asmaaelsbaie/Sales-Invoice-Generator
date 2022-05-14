@@ -2,11 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package test.View;
+package View;
 
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -18,22 +16,26 @@ import javax.swing.JTextField;
  */
 public class HeaderTableDialog extends JDialog {
 
-    private JTextField CustNameDialogTf;
-    private JTextField invDataDialogTf;
-    private JLabel CustNameDialogLb;
-    private JLabel invDataDialogLb;
-    private JButton okBtnDailog;
-    private JButton cancelBtnDialog;
+    private final JTextField CustNameDialogTf;
+    private final JTextField invDataDialogTf;
+    private final JLabel CustNameDialogLb;
+    private final JLabel invDataDialogLb;
+    private final JButton okBtnDailog;
+    private final JButton cancelBtnDialog;
 
-    public HeaderTableDialog(Frame f) {
+    /**
+     *
+     * @param f
+     */
+    public HeaderTableDialog(NewJFrame f) {
         CustNameDialogLb = new JLabel(" Customer Name :");
         CustNameDialogTf = new JTextField(20);
         invDataDialogLb = new JLabel(" Invoice Date :");
         invDataDialogTf = new JTextField(20);
         okBtnDailog = new JButton("Ok");
         cancelBtnDialog = new JButton("Cancel");
-        okBtnDailog.addActionListener((ActionListener) f);
-        cancelBtnDialog.addActionListener((ActionListener) f);
+        okBtnDailog.addActionListener(f.getListner());
+        cancelBtnDialog.addActionListener(f.getListner());
         okBtnDailog.setActionCommand("okBtnDialog");
         cancelBtnDialog.setActionCommand("cancelBtnDialog");
 
@@ -49,6 +51,8 @@ public class HeaderTableDialog extends JDialog {
         setLocation(200, 200);
 
     }
+
+   
 
     public JTextField getCustNameDialogTf() {
         return CustNameDialogTf;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package test;
+package View;
 
 import Controller.InvoiceHeaderListner;
 import java.io.File;
@@ -14,12 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import test.Model.HeaderTableModel;
-import test.Model.InvoiceHeader;
-import test.Model.InvoiceLine;
-import test.Model.LineTableModel;
-import test.View.HeaderTableDialog;
-import test.View.LineTableDialog;
+import Model.HeaderTableModel;
+import Model.InvoiceHeader;
+import Model.InvoiceLine;
+import Model.LineTableModel;
 
 /**
  *
@@ -50,6 +48,7 @@ public class NewJFrame extends javax.swing.JFrame {
         headerTable = new javax.swing.JTable();
         headerTable.getSelectionModel().addListSelectionListener(listner);
         nInvBtn = new javax.swing.JButton();
+        nInvBtn.addActionListener(listner);
         dInvBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -313,7 +312,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void nInvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nInvBtnActionPerformed
         // TODO add your handling code here:
-        listner.createInv();
+         listner.createInv();
     }//GEN-LAST:event_nInvBtnActionPerformed
 
     private void invItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invItemBtnActionPerformed
@@ -351,7 +350,7 @@ public class NewJFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

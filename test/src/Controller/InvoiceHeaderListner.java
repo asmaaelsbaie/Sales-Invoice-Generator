@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,13 +23,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import test.Model.HeaderTableModel;
-import test.Model.InvoiceHeader;
-import test.Model.InvoiceLine;
-import test.Model.LineTableModel;
-import test.NewJFrame;
-import test.View.HeaderTableDialog;
-import test.View.LineTableDialog;
+import Model.HeaderTableModel;
+import Model.InvoiceHeader;
+import Model.InvoiceLine;
+import Model.LineTableModel;
+import View.HeaderTableDialog;
+import View.LineTableDialog;
+import View.NewJFrame;
 
 /**
  *
@@ -37,8 +38,9 @@ import test.View.LineTableDialog;
 public class InvoiceHeaderListner implements ActionListener, ListSelectionListener{
 
  
-    private NewJFrame frame;
-    private SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+    private final NewJFrame frame;
+    private final SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+    
 
     public InvoiceHeaderListner(NewJFrame frame ) {
         this.frame=frame;
@@ -148,14 +150,15 @@ public class InvoiceHeaderListner implements ActionListener, ListSelectionListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("okBtnDialog")) {
-            createInvOKDialog();
-        } else if (e.getActionCommand().equals("cancelBtnDialog")) {
-            createInvCancelDialog();
-        } else if (e.getActionCommand().equals("okBtnDialogL")) {
-            createInvOKDialogLine();
-        } else if (e.getActionCommand().equals("cancelBtnDialogL")) {
-            createInvCancelDialogLine();
+        
+        switch (e.getActionCommand()) {
+            case "okBtnDialog" -> createInvOKDialog();
+            case "cancelBtnDialog" -> createInvCancelDialog();
+            case "okBtnDialogL" -> createInvOKDialogLine();
+            case "cancelBtnDialogL" -> createInvCancelDialogLine();
+          
+            default -> {
+            }
         }
     }
 

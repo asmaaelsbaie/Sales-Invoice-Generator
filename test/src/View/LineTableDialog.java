@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package test.View;
+package View;
 
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -18,17 +18,17 @@ import javax.swing.JTextField;
  */
 public class LineTableDialog extends JDialog {
 
-    private JTextField ItemNameDialogTf;
-    private JTextField countDialogTf;
-    private JTextField priceDialogTf;
+    private final JTextField ItemNameDialogTf;
+    private final JTextField countDialogTf;
+    private final JTextField priceDialogTf;
 
-    private JLabel ItemNameDialogLb;
-    private JLabel countDialogLb;
-    private JLabel priceDialogLb;
-    private JButton okBtnDailog;
-    private JButton cancelBtnDialog;
+    private final JLabel ItemNameDialogLb;
+    private final JLabel countDialogLb;
+    private final JLabel priceDialogLb;
+    private final JButton okBtnDailog;
+    private final JButton cancelBtnDialog;
 
-    public LineTableDialog(Frame f) {
+    public LineTableDialog(NewJFrame f) {
         ItemNameDialogLb = new JLabel(" Item Name :");
         ItemNameDialogTf = new JTextField(20);
         countDialogLb = new JLabel(" Item Count :");
@@ -37,8 +37,8 @@ public class LineTableDialog extends JDialog {
         priceDialogTf = new JTextField(20);
         okBtnDailog = new JButton("Ok");
         cancelBtnDialog = new JButton("Cancel");
-        okBtnDailog.addActionListener((ActionListener) f);
-        cancelBtnDialog.addActionListener((ActionListener) f);
+        okBtnDailog.addActionListener(f.getListner());
+        cancelBtnDialog.addActionListener(f.getListner());
         okBtnDailog.setActionCommand("okBtnDialogL");
         cancelBtnDialog.setActionCommand("cancelBtnDialogL");
 
