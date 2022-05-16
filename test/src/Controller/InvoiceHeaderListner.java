@@ -274,7 +274,7 @@ public class InvoiceHeaderListner implements ActionListener, ListSelectionListen
             File savedFile = fc.getSelectedFile();
 
             try {
-                FileWriter fw = new FileWriter(savedFile + ".csv");
+                FileWriter fw = new FileWriter(savedFile );
                 BufferedWriter bw = new BufferedWriter(fw);
                 for (InvoiceHeader inv : frame.getInvoices()) {
                     for (InvoiceLine item : inv.getLines()) {
